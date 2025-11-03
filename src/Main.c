@@ -148,7 +148,7 @@ void Update(AlxWindow* w){
 
 	Clear(LIGHT_BLUE);
 
-	World3D_update(&world,cam.p);
+	World3D_update(&world,cam.p,(Vec2){ GetWidth(),GetHeight() });
 
 	for(int i = 0;i<world.trisOut.size;i++){
 		triangle* t = (triangle*)Vector_Get(&world.trisOut,i);
