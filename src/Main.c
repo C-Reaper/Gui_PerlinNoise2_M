@@ -14,8 +14,8 @@ int Mode = 0;
 int Menu = 0;
 float Speed = 4.0f;
 
-vec3d WorldOrigin;
-vec3d FunctionAngle;
+Vec3D WorldOrigin;
+Vec3D FunctionAngle;
 Vec2 FunctionOrigin;
 
 int Octaves = 7;
@@ -44,14 +44,13 @@ void Setup(AlxWindow* w){
 	RGA_Set(Time_Nano());
 
 	FunctionOrigin = (Vec2){ 0.0f,0.0f };
-	FunctionAngle = (vec3d){ 0.0f,0.0f,0.0f,1.0f };
-	//WorldOrigin = (vec3d){ 0.0f,0.0f,0.0f,1.0f };
-	WorldOrigin = (vec3d){ 0.0f,0.0f,0.0f,1.0f };
+	FunctionAngle = (Vec3D){ 0.0f,0.0f,0.0f,1.0f };
+	//WorldOrigin = (Vec3D){ 0.0f,0.0f,0.0f,1.0f };
+	WorldOrigin = (Vec3D){ 0.0f,0.0f,0.0f,1.0f };
 
 	cam = Camera_Make(
-		(vec3d){ 0.0f,15.0f,-18.0f,1.0f },
-		(vec3d){ 0.0f,0.0f,0.0f,1.0f },
-		(vec3d){ 3.14 * 0.25f,0.0f,0.0f,1.0f },
+		(Vec3D){ 0.0f,15.0f,-18.0f,1.0f },
+		(Vec3D){ 3.14 * 0.25f,0.0f,0.0f,1.0f },
 		90.0f
 	);
 
@@ -119,25 +118,25 @@ void Update(AlxWindow* w){
 			const float y1 = i;
 			const float y2 = i+1;
 
-			const vec3d p1 = { x1,Function_2D(FunctionOrigin.x + x1,FunctionOrigin.y + y1),y1,1.0f };
-			const vec3d p2 = { x2,Function_2D(FunctionOrigin.x + x2,FunctionOrigin.y + y1),y1,1.0f };
-			const vec3d p3 = { x1,Function_2D(FunctionOrigin.x + x1,FunctionOrigin.y + y2),y2,1.0f };
-			const vec3d p4 = { x2,Function_2D(FunctionOrigin.x + x2,FunctionOrigin.y + y2),y2,1.0f };
+			const Vec3D p1 = { x1,Function_2D(FunctionOrigin.x + x1,FunctionOrigin.y + y1),y1,1.0f };
+			const Vec3D p2 = { x2,Function_2D(FunctionOrigin.x + x2,FunctionOrigin.y + y1),y1,1.0f };
+			const Vec3D p3 = { x1,Function_2D(FunctionOrigin.x + x1,FunctionOrigin.y + y2),y2,1.0f };
+			const Vec3D p4 = { x2,Function_2D(FunctionOrigin.x + x2,FunctionOrigin.y + y2),y2,1.0f };
 
-			triangle t1 = { p1,p4,p2,{},RED };
-			triangle t2 = { p1,p3,p4,{},RED };
-			//triangle t3 = { p1,p2,p4,{},RED };
-			//triangle t4 = { p1,p4,p3,{},RED };
+			Tri3D t1 = { p1,p4,p2,{},RED };
+			Tri3D t2 = { p1,p3,p4,{},RED };
+			//Tri3D t3 = { p1,p2,p4,{},RED };
+			//Tri3D t4 = { p1,p4,p3,{},RED };
 
-			triangle_CalcNorm(&t1);
-			triangle_CalcNorm(&t2);
-			//triangle_CalcNorm(&t3);
-			//triangle_CalcNorm(&t4);
+			Tri3D_CalcNorm(&t1);
+			Tri3D_CalcNorm(&t2);
+			//Tri3D_CalcNorm(&t3);
+			//Tri3D_CalcNorm(&t4);
 
-			triangle_ShadeNorm(&t1,(vec3d){ 0.5f,0.4f,0.6f,1.0f });
-			triangle_ShadeNorm(&t2,(vec3d){ 0.5f,0.4f,0.6f,1.0f });
-			//triangle_ShadeNorm(&t3,(vec3d){ 0.5f,0.4f,0.6f,1.0f });
-			//triangle_ShadeNorm(&t4,(vec3d){ 0.5f,0.4f,0.6f,1.0f });
+			Tri3D_ShadeNorm(&t1,(Vec3D){ 0.5f,0.4f,0.6f,1.0f });
+			Tri3D_ShadeNorm(&t2,(Vec3D){ 0.5f,0.4f,0.6f,1.0f });
+			//Tri3D_ShadeNorm(&t3,(Vec3D){ 0.5f,0.4f,0.6f,1.0f });
+			//Tri3D_ShadeNorm(&t4,(Vec3D){ 0.5f,0.4f,0.6f,1.0f });
 
 			Vector_Push(&world.trisIn,&t1);
 			Vector_Push(&world.trisIn,&t2);
@@ -151,7 +150,7 @@ void Update(AlxWindow* w){
 	World3D_update(&world,cam.p,(Vec2){ GetWidth(),GetHeight() });
 
 	for(int i = 0;i<world.trisOut.size;i++){
-		triangle* t = (triangle*)Vector_Get(&world.trisOut,i);
+		Tri3D* t = (Tri3D*)Vector_Get(&world.trisOut,i);
 
 		if(Mode==0)
 			RenderTriangle(((Vec2){ t->p[0].x, t->p[0].y }),((Vec2){ t->p[1].x, t->p[1].y }),((Vec2){ t->p[2].x, t->p[2].y }),t->c);
